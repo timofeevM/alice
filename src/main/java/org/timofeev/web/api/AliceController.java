@@ -18,9 +18,12 @@ public class AliceController {
 
     @PostMapping("/send_to_telegram")
     public ResponseByAlice sendToTelegram(@RequestBody MessageFromAlice messageFromAlice) {
-        String message = messageFromAlice.getRequest().getCommand();
-        if (message.contains("алиса")){
-            message = message.replaceAll("алиса ", message);
+        String message = null;
+        if (messageFromAlice.getRequest().getCommand().contains("алиса")){
+            message = messageFromAlice.getRequest().getCommand().replaceAll("алиса ", messageFromAlice.getRequest().getCommand());
+        }
+        if (message==null){
+            message = messageFromAlice.getRequest().getCommand();
         }
         if (message.isEmpty()){
             return ResponseByAlice.builder().response(ResponseByAlice.Response.builder().endSession(false).text("Навык готов к использованию").tts("Навык готов к использованию").build()).version("1.0").build();
