@@ -1,1 +1,1 @@
-web: java -jar target/app.war
+web: java -jar target/app.war PORT=8080
