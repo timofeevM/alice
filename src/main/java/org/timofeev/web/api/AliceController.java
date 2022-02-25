@@ -19,7 +19,7 @@ public class AliceController {
     @PostMapping("/send_to_telegram")
     public ResponseByAlice sendToTelegram(@RequestBody MessageFromAlice messageFromAlice) {
         log.info(messageFromAlice.toString());
-        telegramService.sendTelegram(messageFromAlice.getRequest().getOriginalUtterance());
+        telegramService.sendTelegram(messageFromAlice.getRequest().getCommand());
         return ResponseByAlice.builder().response(ResponseByAlice.Response.builder().endSession(false).text("Готово").tts("готово").build()).version("1.0").build();
     }
 }

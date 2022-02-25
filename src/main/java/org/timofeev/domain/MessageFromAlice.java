@@ -12,5 +12,7 @@ public class MessageFromAlice {
     public static class Request{
         @JsonProperty("original_utterance")
         private String originalUtterance;
+
+        private String command;
     }
 }
