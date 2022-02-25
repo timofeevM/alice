@@ -18,15 +18,18 @@ public class AliceController {
 
     @PostMapping("/send_to_telegram")
     public ResponseByAlice sendToTelegram(@RequestBody MessageFromAlice messageFromAlice) {
-        if (messageFromAlice.getRequest().getCommand().isEmpty()){
+        String message = messageFromAlice.getRequest().getCommand();
+        if (message.contains("алиса")){
+            message = message.replaceAll("алиса ", message);
+        }
+        if (message.isEmpty()){
             return ResponseByAlice.builder().response(ResponseByAlice.Response.builder().endSession(false).text("Навык готов к использованию").tts("Навык готов к использованию").build()).version("1.0").build();
         }
-        if (messageFromAlice.getRequest().getCommand().equalsIgnoreCase("конец") || messageFromAlice.getRequest().getCommand().equalsIgnoreCase("конец списка")){
-            telegramService.sendTelegram("=========================================");
+        if (message.equalsIgnoreCase("конец") || message.equalsIgnoreCase("закончи список")){
+            telegramService.sendTelegram("==========================");
             return ResponseByAlice.builder().response(ResponseByAlice.Response.builder().endSession(true).text("").tts("").build()).version("1.0").build();
         }
-        log.info(messageFromAlice.toString());
-        telegramService.sendTelegram(messageFromAlice.getRequest().getCommand());
+        telegramService.sendTelegram(message);
         return ResponseByAlice.builder().response(ResponseByAlice.Response.builder().endSession(false).text("Готово").tts("готово").build()).version("1.0").build();
     }
 }
