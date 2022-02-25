@@ -18,6 +18,13 @@ public class AliceController {
 
     @PostMapping("/send_to_telegram")
     public ResponseByAlice sendToTelegram(@RequestBody MessageFromAlice messageFromAlice) {
+        if (messageFromAlice.getRequest().getCommand().isEmpty()){
+            return ResponseByAlice.builder().response(ResponseByAlice.Response.builder().endSession(false).text("Навык готов к использованию").tts("Навык готов к использованию").build()).version("1.0").build();
+        }
+        if (messageFromAlice.getRequest().getCommand().equalsIgnoreCase("конец") || messageFromAlice.getRequest().getCommand().equalsIgnoreCase("конец списка")){
+            telegramService.sendTelegram("=========================================");
+            return ResponseByAlice.builder().response(ResponseByAlice.Response.builder().endSession(true).text("").tts("").build()).version("1.0").build();
+        }
         log.info(messageFromAlice.toString());
         telegramService.sendTelegram(messageFromAlice.getRequest().getCommand());
         return ResponseByAlice.builder().response(ResponseByAlice.Response.builder().endSession(false).text("Готово").tts("готово").build()).version("1.0").build();
